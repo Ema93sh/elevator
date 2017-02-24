@@ -1,0 +1,133 @@
+New log file opened at Sat Feb 18 00:04:14 PST 2017 by 25480@ema93sh.local
+Taking next connection to: 57579
+New client attempting to connect on port: 57602-57579
+  Address = /10.0.0.181:57579
+This client on port 57602 has uuid 2fb682ac-5a2b-4eb0-b118-2063b839effb configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-2fb682ac-5a2b-4eb0-b118-2063b839effb
+Taking next connection to: 57579
+New client attempting to connect on port: 57603-57579
+  Address = /10.0.0.181:57579
+Handshake exception on socket: 57603
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 57579
+New client attempting to connect on port: 57604-57579
+  Address = /10.0.0.181:57579
+This client on port 57604 has uuid 47b98ea2-7e66-4bf1-8cd2-a87786d03373 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-47b98ea2-7e66-4bf1-8cd2-a87786d03373
+Taking next connection to: 57579
+New client attempting to connect on port: 57605-57579
+  Address = /10.0.0.181:57579
+Handshake exception on socket: 57605
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 57579
+New client attempting to connect on port: 57606-57579
+  Address = /10.0.0.181:57579
+This client on port 57606 has uuid 598bf521-cb41-4614-9bac-f92cc8746cf8 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-47b98ea2-7e66-4bf1-8cd2-a87786d03373, activator-598bf521-cb41-4614-9bac-f92cc8746cf8
+Taking next connection to: 57579
+New client attempting to connect on port: 57607-57579
+  Address = /10.0.0.181:57579
+Handshake exception on socket: 57607
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 57579
+New client attempting to connect on port: 57615-57579
+  Address = /10.0.0.181:57579
+This client on port 57615 has uuid 4282d668-e05c-4c9c-93ec-ec903b857967 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-47b98ea2-7e66-4bf1-8cd2-a87786d03373, activator-598bf521-cb41-4614-9bac-f92cc8746cf8, activator-4282d668-e05c-4c9c-93ec-ec903b857967
+Taking next connection to: 57579
+New client attempting to connect on port: 57620-57579
+  Address = /10.0.0.181:57579
+Handshake exception on socket: 57620
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 57579
+New client attempting to connect on port: 57621-57579
+  Address = /10.0.0.181:57579
+This client on port 57621 has uuid f6d96756-bb41-4464-b8ad-626cab6edd70 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-47b98ea2-7e66-4bf1-8cd2-a87786d03373, activator-598bf521-cb41-4614-9bac-f92cc8746cf8, activator-4282d668-e05c-4c9c-93ec-ec903b857967, activator-f6d96756-bb41-4464-b8ad-626cab6edd70
+Taking next connection to: 57579
+New client attempting to connect on port: 57622-57579
+  Address = /10.0.0.181:57579
+Handshake exception on socket: 57622
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 57579
+New client attempting to connect on port: 57624-57579
+  Address = /10.0.0.181:57579
+This client on port 57624 has uuid c0eefb67-686f-4308-8b90-d7b7f6f8a43e configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-47b98ea2-7e66-4bf1-8cd2-a87786d03373, activator-598bf521-cb41-4614-9bac-f92cc8746cf8, activator-4282d668-e05c-4c9c-93ec-ec903b857967, activator-f6d96756-bb41-4464-b8ad-626cab6edd70, activator-c0eefb67-686f-4308-8b90-d7b7f6f8a43e
+Taking next connection to: 57579
+New client attempting to connect on port: 57625-57579
+  Address = /10.0.0.181:57579
+Handshake exception on socket: 57625
+sbt.impl.ipc.HandshakeException: Unable to perform handshake
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:46)
+	at sbt.impl.ipc.MultiClientServer.<init>(IPC.scala:150)
+	at sbt.server.SbtServerSocketHandler$$anon$1.run(SbtServerSocketHandler.scala:43)
+Caused by: java.io.EOFException
+	at java.io.DataInputStream.readInt(DataInputStream.java:392)
+	at sbt.impl.ipc.Peer.receive(IPC.scala:95)
+	at sbt.impl.ipc.Peer.handshake(IPC.scala:49)
+	... 2 more
+Taking next connection to: 57579
+New client attempting to connect on port: 57626-57579
+  Address = /10.0.0.181:57579
+This client on port 57626 has uuid 4e72f3ed-c278-45e1-a9d2-7445c7b71a00 configName activator humanReadableName Activator protocolVersion 3 featureTags Vector()
+Connected Clients: activator-47b98ea2-7e66-4bf1-8cd2-a87786d03373, activator-598bf521-cb41-4614-9bac-f92cc8746cf8, activator-4282d668-e05c-4c9c-93ec-ec903b857967, activator-f6d96756-bb41-4464-b8ad-626cab6edd70, activator-c0eefb67-686f-4308-8b90-d7b7f6f8a43e, activator-4e72f3ed-c278-45e1-a9d2-7445c7b71a00
+Taking next connection to: 57579
+Checking to see if clients are empty...
+We have 3 non-daemon clients, continuing serving connections.
+Taking next connection to: 57579
+Checking to see if clients are empty...
+We have 3 non-daemon clients, continuing serving connections.
+Taking next connection to: 57579
+Checking to see if clients are empty...
+We have 3 non-daemon clients, continuing serving connections.
+Taking next connection to: 57579
+Checking to see if clients are empty...
+We have 3 non-daemon clients, continuing serving connections.
+Taking next connection to: 57579
+Checking to see if clients are empty...
+We have 3 non-daemon clients, continuing serving connections.
+Taking next connection to: 57579
+Checking to see if clients are empty...
+We have 3 non-daemon clients, continuing serving connections.
+Taking next connection to: 57579
