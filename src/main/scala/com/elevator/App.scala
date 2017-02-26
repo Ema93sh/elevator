@@ -1,10 +1,7 @@
 package com.elevator
 
-import scala.io._
-
-import ElevatorControlSystem._
-import ElevatorEnums.Direction._
-import ElevatorEnums.ElevatorState._
+import com.elevator.ElevatorControlSystem._
+import com.elevator.ElevatorEnums.ElevatorState._
 
 object Application extends App {
 
@@ -16,7 +13,7 @@ object Application extends App {
 
      val elevatorControlSystem = NearestElevatorControlSystem(elevators)
 
-     val simulator = Simulator(elevatorControlSystem, true, true)
+     val simulator = Simulator(elevatorControlSystem, shouldDisplay = true, shouldDelay = true)
 
      simulator.runSimulation(1000, 6)
 

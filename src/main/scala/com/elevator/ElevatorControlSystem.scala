@@ -1,14 +1,10 @@
 package com.elevator
 
-import ElevatorEnums.Direction._
-import ElevatorEnums.ElevatorState._
-import ElevatorEnums.PersonState._
-
 object ElevatorControlSystem {
 
   trait ElevatorControlSystem {
-    def pickUp(person: Person)
-    def updateState()
+    def pickUp(person: Person): Unit
+    def updateState(): Unit
     def status: List[Elevator]
   }
 
@@ -16,7 +12,7 @@ object ElevatorControlSystem {
     val MaxFloors = 16
 
 
-    def pickUp(person: Person) = {
+    def pickUp(person: Person): Unit = {
       val nearestElevator = elevators.maxBy(_.feasibilityFunction(person.pickUp, person.direction))
       elevators = elevators.map {
         case e if e == nearestElevator => nearestElevator.addRequest(person)
@@ -24,10 +20,10 @@ object ElevatorControlSystem {
       }
     }
 
-    def status = elevators
+    def status: List[Elevator] = elevators
 
-    def updateState = {
-      elevators = elevators.map(_.updateState)
+    def updateState(): Unit = {
+      elevators = elevators.map(_.updateState())
     }
 
   }

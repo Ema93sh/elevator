@@ -1,13 +1,12 @@
 package com.elevator
 
-import ElevatorControlSystem._
-import ElevatorEnums.Direction._
-import ElevatorEnums.ElevatorState._
-import ElevatorEnums.PersonState._
+import com.elevator.ElevatorControlSystem._
+import com.elevator.ElevatorEnums.ElevatorState._
+import com.elevator.ElevatorEnums.PersonState._
 
 object PrettyPrinter {
 
-  def drawElevator(elevator: Elevator) = {
+  def drawElevator(elevator: Elevator): String = {
     elevator.currentState match {
       case Open       => "[<  >]"
       case Close      => "[ >< ]"
@@ -18,7 +17,7 @@ object PrettyPrinter {
     }
   }
 
-  def elevatorToString(elevator: Elevator) = {
+  def elevatorToString(elevator: Elevator): String = {
     val pickUpLocations = elevator.requests.filter(p => p.state == Waiting).map(_.floor)
     val dropLocations   = elevator.requests.filter(p => p.state == PickedUp).map(_.floor)
 
@@ -33,15 +32,15 @@ object PrettyPrinter {
   }
 
 
-  def displayCurrentState(controlSystem: ElevatorControlSystem, currentTime: Int) = {
+  def displayCurrentState(controlSystem: ElevatorControlSystem, currentTime: Int): Unit = {
     println("Time: " + currentTime)
     controlSystem.status
-      .map(elevatorToString(_))
+      .map(elevatorToString)
       .foreach(println)
   }
 
 
-  def clearConsole {
+  def clearConsole() {
      print("\033[%dA".format(12));
      print("\033[K"*12)
   }

@@ -11,17 +11,17 @@ case class Elevator(elevatorId: String,
                     requests:  Set[Person]) {
   val MaxFloors = 16
 
-  val direction = currentState match {
+  def direction: Direction = currentState match {
     case GoingUp   => Up
     case GoingDown => Down
     case _         => NoDirection
   }
 
-  def addRequest(request: Person) = {
+  def addRequest(request: Person): Elevator = {
     this.copy(requests = requests + request)
   }
 
-  def updateState = currentState match {
+  def updateState(): Elevator = currentState match {
     case Stationary => whenStationary
 
     case GoingUp => going(Up)
@@ -33,7 +33,7 @@ case class Elevator(elevatorId: String,
     case Close => whenStationary
   }
 
-  def feasibilityFunction(requestFloor: Int, requestDirection: Direction) = {
+  def feasibilityFunction(requestFloor: Int, requestDirection: Direction): Int = {
     //TODO: Refactor! Too Many IF branches
     val distance    = Math.abs(requestFloor - currentFloor)
 
@@ -57,9 +57,9 @@ case class Elevator(elevatorId: String,
 
   // Helper methods!
 
-  def isStationary = (currentState == Stationary) && requests.isEmpty
+  def isStationary: Boolean = (currentState == Stationary) && requests.isEmpty
 
-  def whenStationary = requests.toList match { // TODO: Fix toList! Can't pattern match on set
+  def whenStationary: Elevator = requests.toList match { // TODO: Fix toList! Can't pattern match on set
     case Nil => this.copy(currentState = Stationary)
     case x :: xs  if x.floor == currentFloor => this.copy(currentState = Open, requests = (x::xs).toSet)
     case x :: xs  if x.floor > currentFloor  => this.copy(currentState = GoingUp, requests = (x::xs).toSet)
@@ -67,7 +67,7 @@ case class Elevator(elevatorId: String,
   }
 
 
-  def isMovingTowards(requestedFloor: Int) = {
+  def isMovingTowards(requestedFloor: Int): Boolean = {
     if (requestedFloor - currentFloor > 0 ) {
       direction == Up
     }
@@ -77,34 +77,34 @@ case class Elevator(elevatorId: String,
   }
 
 
-  def shouldOpen = requests.exists(_.hasStopAt(currentFloor))
+  def shouldOpen: Boolean = requests.exists(_.hasStopAt(currentFloor))
 
-  def reachedLimit = {
+  def reachedLimit: Boolean = {
     (currentFloor == 1 && currentState == GoingDown) ||
     (currentFloor == MaxFloors && currentState == GoingUp)
   }
 
-  def switchDirection = currentState match {
+  def switchDirection: Elevator = currentState match {
     case GoingUp   => this.copy(currentState = GoingDown, currentFloor = currentFloor - 1)
     case GoingDown => this.copy(currentState = GoingUp, currentFloor = currentFloor + 1)
     case _         => this
   }
 
-  def updateFloor = currentState match {
+  def updateFloor(): Int = currentState match {
     case GoingUp    => currentFloor + 1
     case GoingDown  => currentFloor - 1
     case _          => currentFloor
   }
 
-  def noRequestInSameDirection = {
+  def noRequestInSameDirection: Boolean = {
     if(direction == Up) {
-      requests.filter(_.floor > currentFloor).size == 0
+      !requests.exists(_.floor > currentFloor)
     } else {
-      requests.filter(_.floor < currentFloor).size == 0
+      !requests.exists(_.floor < currentFloor)
     }
   }
 
-  def going(direction: Direction) = {
+  def going(direction: Direction): Elevator = {
     // TODO: better way?
     if(requests.isEmpty) {
       this.copy(currentState = Stationary)
@@ -119,7 +119,7 @@ case class Elevator(elevatorId: String,
       this.copy(currentState = Open)
     }
     else {
-      this.copy(currentFloor = updateFloor)
+      this.copy(currentFloor = updateFloor())
     }
   }
 

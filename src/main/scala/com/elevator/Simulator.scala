@@ -1,14 +1,13 @@
 package com.elevator
 
-import ElevatorControlSystem._
-import ElevatorEnums.Direction._
-import ElevatorEnums.PersonState._
+import com.elevator.ElevatorControlSystem._
+import com.elevator.ElevatorEnums.PersonState._
 
 case class Simulator(controlSystem: ElevatorControlSystem, shouldDisplay: Boolean, shouldDelay: Boolean) {
   var currentTime = 0
   var status = "Starting Simulation -- PR[Pick Up Request] DR[Drop Request]"
 
-  def randomPickUpAndDrop = {
+  def randomPickUpAndDrop(): Unit = {
     val r = scala.util.Random
     val range = 1 to 16
     val randomPickUp = range(r.nextInt(range.length))
@@ -17,33 +16,33 @@ case class Simulator(controlSystem: ElevatorControlSystem, shouldDisplay: Boolea
     status = "Pick requested at " + randomPickUp + " with drop at " + randomDrop + " -------------"
   }
 
-  def display = {
+  def display(): Unit = {
     if(shouldDisplay) {
-      PrettyPrinter.clearConsole
+      PrettyPrinter.clearConsole()
       PrettyPrinter.displayCurrentState(controlSystem, currentTime)
       println("Status Update:" + status)
       println("")
     }
   }
 
-  def delay = {
+  def delay(): Unit = {
     if(shouldDelay) {
         Thread.sleep(500)
     }
   }
 
-  def runSimulation(steps: Int, requestInterval: Int) = {
+  def runSimulation(steps: Int, requestInterval: Int): Unit = {
     PrettyPrinter.displayCurrentState(controlSystem, currentTime)
     println("Status Update:" + status)
     println("")
     (1 to steps).foreach(_ => {
-      display
-      controlSystem.updateState
+      display()
+      controlSystem.updateState()
       currentTime += 1
       if(currentTime % requestInterval == 0) {
-        randomPickUpAndDrop
+        randomPickUpAndDrop()
       }
-      delay
+      delay()
     })
   }
 }
