@@ -2,33 +2,29 @@ package com.elevator
 
 import ElevatorEnums.Direction._
 import ElevatorEnums.ElevatorState._
-import ElevatorEnums.RequestType._
+import ElevatorEnums.PersonState._
 
 object ElevatorControlSystem {
 
   trait ElevatorControlSystem {
-    def pickUp(floor:Int, direction: Direction): Elevator
-    def dropAt(floor:Int, elevator: String)
+    def pickUp(person: Person)
     def updateState()
-    def getElevators: List[Elevator]
+    def status: List[Elevator]
   }
-
 
   case class NearestElevatorControlSystem(private var elevators: List[Elevator]) extends ElevatorControlSystem {
     val MaxFloors = 16
 
-    def pickUp(floor: Int, direction: Direction) = {
-      val nearestElevator = elevators.maxBy(_.feasibilityFunction(floor, direction))
-      nearestElevator.addRequest(Request(PickUp, floor))
-      nearestElevator
+
+    def pickUp(person: Person) = {
+      val nearestElevator = elevators.maxBy(_.feasibilityFunction(person.pickUp, person.direction))
+      elevators = elevators.map {
+        case e if e == nearestElevator => nearestElevator.addRequest(person)
+        case x                         => x
+      }
     }
 
-    def dropAt(floor: Int, elevatorId: String) = {
-      val elevatorToDrop = elevators.find(_.elevatorId == elevatorId).get
-      elevatorToDrop.addRequest(Request(Drop, floor))
-    }
-
-    def getElevators = elevators
+    def status = elevators
 
     def updateState = {
       elevators = elevators.map(_.updateState)

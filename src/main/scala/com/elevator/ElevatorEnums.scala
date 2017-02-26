@@ -12,16 +12,18 @@ package object ElevatorEnums {
     case object Stationary extends ElevatorState
   }
 
+  object PersonState {
+    sealed abstract class PersonState
+    case object Waiting extends PersonState
+    case object PickedUp extends PersonState
+    case object DropedOff  extends PersonState
+  }
+
   object Direction {
     sealed abstract class Direction
     case object Up extends Direction
     case object Down extends Direction
-  }
-
-  object RequestType {
-    sealed abstract class RequestType
-    case object PickUp extends RequestType
-    case object Drop extends RequestType
+    case object NoDirection extends Direction
   }
 
 }

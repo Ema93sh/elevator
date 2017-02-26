@@ -3,8 +3,8 @@ import org.scalatest._
 import com.elevator._
 
 import ElevatorEnums.Direction._
-import ElevatorEnums.RequestType._
 import ElevatorEnums.ElevatorState._
+import ElevatorEnums.PersonState._
 import ElevatorControlSystem._
 
 class ElevatorControlSystemSpec extends FunSpec with Matchers {
@@ -13,109 +13,110 @@ class ElevatorControlSystemSpec extends FunSpec with Matchers {
     describe("NearestElevator") {
       describe("Pick up request") {
         it("should send the pick up request to the nearest elevator") {
-          val elevatorAlpha   = Elevator("alpha", 1, Stationary, List())
-          val elevatorBeta    = Elevator("beta", 6, Stationary, List())
-          val elevatorCharlie = Elevator("charlie", 4, Stationary, List())
+          val elevatorAlpha   = Elevator("alpha", 1, Stationary, Set())
+          val elevatorBeta    = Elevator("beta", 6, Stationary, Set())
+          val elevatorCharlie = Elevator("charlie", 4, Stationary, Set())
           val elevators       = List(elevatorAlpha, elevatorBeta, elevatorCharlie)
 
           val elevatorControlSystem = NearestElevatorControlSystem(elevators)
 
-          elevatorControlSystem.pickUp(2, Up)
+          elevatorControlSystem.pickUp(Person(2, 5, Waiting))
 
-          elevatorControlSystem.getElevators(0).requestQueueStatus should be(List(Request(PickUp, 2)))
-          elevatorControlSystem.getElevators(1).requestQueueStatus should be(List())
-          elevatorControlSystem.getElevators(2).requestQueueStatus should be(List())
+          elevatorControlSystem.status(0).requests should be(Set(Person(2, 5, Waiting)))
+          elevatorControlSystem.status(1).requests should be(Set())
+          elevatorControlSystem.status(2).requests should be(Set())
         }
 
         it("should select the elevator with the same direction") {
-          val elevatorAlpha   = Elevator("alpha", 3, GoingDown, List())
-          val elevatorBeta    = Elevator("beta", 3, GoingUp, List())
+          val elevatorAlpha   = Elevator("alpha", 3, GoingDown, Set())
+          val elevatorBeta    = Elevator("beta", 3, GoingUp, Set())
 
           val elevators       = List(elevatorAlpha, elevatorBeta)
 
           val elevatorControlSystem = NearestElevatorControlSystem(elevators)
 
-          elevatorControlSystem.pickUp(4, Up)
-          elevatorControlSystem.getElevators(0).requestQueueStatus should be(List())
-          elevatorControlSystem.getElevators(1).requestQueueStatus should be(List(Request(PickUp, 4)))
+          elevatorControlSystem.pickUp(Person(4, 7, Waiting))
+
+          elevatorControlSystem.status(0).requests should be(Set())
+          elevatorControlSystem.status(1).requests should be(Set(Person(4, 7, Waiting)))
         }
 
         it("should select the elevator which is Stationary") {
-          val elevatorAlpha    = Elevator("alpha", 2, GoingDown, List())
-          val elevatorBeta     = Elevator("beta", 3, GoingDown, List())
-          val elevatorCharlie  = Elevator("charlie", 3, Stationary, List(Request(PickUp, 1)))
+          val elevatorAlpha    = Elevator("alpha", 2, GoingDown, Set(Person(6, 7, Waiting)))
+          val elevatorBeta     = Elevator("beta", 3, GoingDown, Set(Person(7, 5, PickedUp)))
+          val elevatorCharlie  = Elevator("charlie", 3, Stationary, Set())
 
           val elevators        = List(elevatorAlpha, elevatorBeta, elevatorCharlie)
 
           val elevatorControlSystem = NearestElevatorControlSystem(elevators)
 
-          elevatorControlSystem.pickUp(4, Up)
+          elevatorControlSystem.pickUp(Person(4, 7, Waiting))
 
-          elevatorControlSystem.getElevators(0).requestQueueStatus should be(List())
-          elevatorControlSystem.getElevators(1).requestQueueStatus should be(List())
-          elevatorControlSystem.getElevators(2).requestQueueStatus should be(List(Request(PickUp, 1), Request(PickUp, 4)))
+          elevatorControlSystem.status(0).requests should be(Set(Person(6, 7, Waiting)))
+          elevatorControlSystem.status(1).requests should be(Set(Person(7, 5, PickedUp)))
+          elevatorControlSystem.status(2).requests should be(Set(Person(4, 7, Waiting)))
         }
 
         it("should select the closest possible elevator if no elevator is going in the same direction") {
-          val elevatorAlpha    = Elevator("alpha", 2, GoingUp, List(Request(PickUp, 3), Request(PickUp, 4), Request(PickUp, 5)))
-          val elevatorBeta     = Elevator("beta", 3, GoingUp, List(Request(PickUp, 4), Request(PickUp, 5)))
-          val elevatorCharlie  = Elevator("charlie", 4, GoingUp, List(Request(PickUp, 6), Request(Drop, 7)))
+          val elevatorAlpha    = Elevator("alpha", 3, GoingUp, Set(Person(3, 8, Waiting), Person(4, 7, Waiting), Person(5, 6, Waiting)))
+          val elevatorBeta     = Elevator("beta", 3, GoingUp, Set(Person(4, 7, Waiting), Person(5, 6, Waiting)))
+          val elevatorCharlie  = Elevator("charlie", 4, GoingUp, Set(Person(6, 7, Waiting), Person(4, 7, PickedUp)))
           val elevators        = List(elevatorAlpha, elevatorBeta, elevatorCharlie)
 
           val elevatorControlSystem = NearestElevatorControlSystem(elevators)
 
-          elevatorControlSystem.pickUp(4, Down)
+          elevatorControlSystem.pickUp(Person(2, 1, Waiting))
 
-          elevatorControlSystem.getElevators(0).requestQueueStatus should be(List(Request(PickUp, 3), Request(PickUp, 4), Request(PickUp, 5)))
-          elevatorControlSystem.getElevators(1).requestQueueStatus should be(List(Request(PickUp, 4), Request(PickUp, 5), Request(PickUp, 4)))
-          elevatorControlSystem.getElevators(2).requestQueueStatus should be(List(Request(PickUp, 6), Request(Drop, 7)))
+          elevatorControlSystem.status(0).requests should be(Set(Person(3, 8, Waiting), Person(4, 7, Waiting), Person(5, 6, Waiting)))
+          elevatorControlSystem.status(1).requests should be(Set(Person(4, 7, Waiting), Person(5, 6, Waiting), Person(2, 1, Waiting)))
+          elevatorControlSystem.status(2).requests should be(Set(Person(6, 7, Waiting), Person(4, 7, PickedUp)))
         }
 
         it("should select elevator that is stationary") {
-          val elevatorAlpha    = Elevator("alpha", 3, Stationary, List(Request(PickUp, 1)))
-          val elevatorBeta     = Elevator("beta", 2, Stationary, List())
-          val elevatorCharlie  = Elevator("charlie", 4, GoingUp, List(Request(PickUp, 6), Request(Drop, 7)))
+          val elevatorAlpha    = Elevator("alpha", 3, Stationary, Set(Person(1, 5, Waiting)))
+          val elevatorBeta     = Elevator("beta", 2, Stationary, Set())
+          val elevatorCharlie  = Elevator("charlie", 4, GoingUp, Set(Person(6, 7, Waiting), Person(4, 7, PickedUp)))
           val elevators = List(elevatorAlpha, elevatorBeta, elevatorCharlie)
 
           val elevatorControlSystem = NearestElevatorControlSystem(elevators)
 
-          elevatorControlSystem.pickUp(2, Down)
+          elevatorControlSystem.pickUp(Person(2, 1, Waiting))
 
-          elevatorControlSystem.getElevators(0).requestQueueStatus should be(List(Request(PickUp, 1)))
-          elevatorControlSystem.getElevators(1).requestQueueStatus should be(List(Request(PickUp, 2)))
-          elevatorControlSystem.getElevators(2).requestQueueStatus should be(List(Request(PickUp, 6), Request(Drop, 7)))
+          elevatorControlSystem.status(0).requests should be(Set(Person(1, 5, Waiting)))
+          elevatorControlSystem.status(1).requests should be(Set(Person(2, 1, Waiting)))
+          elevatorControlSystem.status(2).requests should be(Set(Person(6, 7, Waiting), Person(4, 7, PickedUp)))
         }
 
         it("should select the elevator on the same floor") {
-          val elevatorAlpha    = Elevator("alpha", 3, Stationary, List(Request(PickUp, 1)))
-          val elevatorBeta     = Elevator("beta", 2, Open, List())
-          val elevators = List(elevatorAlpha, elevatorBeta)
+          val elevatorAlpha    = Elevator("alpha", 3, Stationary, Set(Person(1, 5, Waiting)))
+          val elevatorBeta     = Elevator("beta", 2, Open, Set())
+          val elevators        = List(elevatorAlpha, elevatorBeta)
           val elevatorControlSystem = NearestElevatorControlSystem(elevators)
 
-          elevatorControlSystem.pickUp(2, Down)
+          elevatorControlSystem.pickUp(Person(2, 1, Waiting))
 
-          elevatorControlSystem.getElevators(0).requestQueueStatus should be(List(Request(PickUp, 1)))
-          elevatorControlSystem.getElevators(1).requestQueueStatus should be(List(Request(PickUp, 2)))
+          elevatorControlSystem.status(0).requests should be(Set(Person(1, 5, Waiting)))
+          elevatorControlSystem.status(1).requests should be(Set(Person(2, 1, Waiting)))
         }
 
       }
 
-      describe("Drop off request") {
-        it("should update the elevator request with the drop off request") {
-          val elevatorAlpha    = Elevator("alpha", 2, GoingUp, List(Request(PickUp, 3), Request(PickUp, 4), Request(PickUp, 5)))
-          val elevatorBeta     = Elevator("beta", 3, GoingUp, List(Request(PickUp, 4), Request(PickUp, 5)))
-          val elevatorCharlie  = Elevator("charlie", 4, GoingUp, List(Request(PickUp, 6), Request(Drop, 7)))
-          val elevators        = List(elevatorAlpha, elevatorBeta, elevatorCharlie)
-
-          val elevatorControlSystem = NearestElevatorControlSystem(elevators)
-
-          elevatorControlSystem.dropAt(1, "alpha")
-
-          elevatorControlSystem.getElevators(0).requestQueueStatus should be(List(Request(PickUp, 3), Request(PickUp, 4), Request(PickUp, 5), Request(Drop, 1)))
-          elevatorControlSystem.getElevators(1).requestQueueStatus should be(List(Request(PickUp, 4), Request(PickUp, 5)))
-          elevatorControlSystem.getElevators(2).requestQueueStatus should be(List(Request(PickUp, 6), Request(Drop, 7)))
-        }
-      }
+      // ignore("Drop off request") {
+      //   it("should update the elevator request with the drop off request") {
+      //     val elevatorAlpha    = Elevator("alpha", 2, GoingUp, Set(Person(3, 8, Waiting), Person(4, 7, Waiting), Person(5, 6, Waiting)))
+      //     val elevatorBeta     = Elevator("beta", 3, GoingUp, Set(Person(4, 7, Waiting), Person(5, 6, Waiting)))
+      //     val elevatorCharlie  = Elevator("charlie", 4, GoingUp, Set(Person(6, 7, Waiting), Person(4, 7, PickedUp)))
+      //     val elevators        = List(elevatorAlpha, elevatorBeta, elevatorCharlie)
+      //
+      //     val elevatorControlSystem = NearestElevatorControlSystem(elevators)
+      //
+      //     elevatorControlSystem.dropAt(1, "alpha")
+      //
+      //     elevatorControlSystem.status(0).requests should be(Set(Person(3, 8, Waiting), Person(4, 7, Waiting), Person(5, 6, Waiting), Person(4, 1, PickedUp)))
+      //     elevatorControlSystem.status(1).requests should be(Set(Person(4, 7, Waiting), Person(5, 6, Waiting)))
+      //     elevatorControlSystem.status(2).requests should be(Set(Person(6, 7, Waiting), Person(4, 7, PickedUp)))
+      //   }
+      // }
 
     }
   }
