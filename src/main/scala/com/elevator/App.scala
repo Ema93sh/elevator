@@ -18,7 +18,7 @@ object Application extends App {
 
      val simulator = Simulator(elevatorControlSystem, true, true)
 
-     simulator.runSimulation(1000, 8)
+     simulator.runSimulation(1000, 6)
 
    }
 }

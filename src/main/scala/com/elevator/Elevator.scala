@@ -102,7 +102,6 @@ case class Elevator(elevatorId: String,
     } else {
       requests.filter(_.floor < currentFloor).size == 0
     }
-
   }
 
   def going(direction: Direction) = {
