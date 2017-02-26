@@ -1,4 +1,4 @@
-name := """minimal-scala"""
+name := """mesos-challenge"""
 
 version := "1.0"
 
